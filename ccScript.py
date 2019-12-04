@@ -21,7 +21,6 @@ Arguments:
 --ccid = change control identifier. Can find by inspecting the URL while in
 a change control. Ex: /change-control?ccId=656f730a-20D8ZwR41 - use everything
 after 'ccId=', so ccid should be 656f730a-20D8ZwR41
---status = check change control status to make sure you have a correct ccID.
 --start = start change control, generates no useful output. Cannot be used
 with --status.
 """
@@ -37,7 +36,6 @@ session = requests.Session()
 def parseArgs():
    parser = argparse.ArgumentParser( description='Change-Control Kickstart' )
    parser.add_argument('--ccid', help='Enter the Change Control id.', type=str)
-   parser.add_argument('--status', help='Checks Change Control Status.', action='store_true')
    parser.add_argument('--start', help='Starts Change Control.', action='store_true')
    args = parser.parse_args()
    return args
@@ -58,11 +56,6 @@ def logout(url_prefix):
     response = session.post(url_prefix+'/cvpservice/login/logout.do')
     return response.json()
 
-def cc_status(url_prefix,ccID):
-    tempData = json.dumps({'cc_id': ccID})
-    response = session.post(url_prefix+'/api/v3/services/ccapi.ChangeControl/GetStatus', data=tempData)
-    return response.json()
-
 def start_cc(url_prefix,ccID):
     tempData = json.dumps({'cc_id': ccID})
     response = session.post(url_prefix+'/api/v3/services/ccapi.ChangeControl/Start', data=tempData)
@@ -75,9 +68,7 @@ else:
     print 'Please enter a change control identifier with --ccid (changecontrolid).'
     exit()
 login(server,cvpUsername,cvpPassword)
-if options.status:
-    output = cc_status(server,ccID)
-elif options.start:
+if options.start:
     output = start_cc(server,ccID)
 print output
 logout(server)
