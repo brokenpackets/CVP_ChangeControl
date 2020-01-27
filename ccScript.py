@@ -21,8 +21,7 @@ Arguments:
 --ccid = change control identifier. Can find by inspecting the URL while in
 a change control. Ex: /change-control?ccId=656f730a-20D8ZwR41 - use everything
 after 'ccId=', so ccid should be 656f730a-20D8ZwR41
---start = start change control, generates no useful output. Cannot be used
-with --status.
+--start = start change control, generates no useful output.
 """
 
 #Requests info for CVP API
